@@ -5,17 +5,32 @@ const { buildSchema } = require('graphql');
 
 const app = express();
 
+const users = [];
+
 app.use(bodyParser.json());
 
 app.use(
   '/graphql',
   graphqlHttp({
     schema: buildSchema(`
+        type User {
+          _id: ID!
+          username: String!
+          password: String!
+          contact: String!
+          date: String!
+        }
+        input UserInput {
+          username: String!
+          password: String!
+          contact: String!
+          date: String!
+        }
         type RootQuery {
-            users: [String!]!
+            users: [User!]!
         }
         type RootMutation {
-            createUser(name: String): String
+            createUser(userInput: UserInput): User
         }
         schema {
             query: RootQuery
@@ -23,10 +38,17 @@ app.use(
         }
     `),
     rootValue: {
-      users: () => ['User 1', 'User 2', 'User 3'],
+      users: () => users,
       createUser: (args) => {
-        const eventName = args.name;
-        return eventName;
+        const user = {
+          _id: Math.random().toString(),
+          username: args.userInput.username,
+          password: args.userInput.password,
+          contact: args.userInput.contact,
+          date: args.userInput.date,
+        };
+        users.push(user);
+        return user;
       },
     },
     graphiql: true,
