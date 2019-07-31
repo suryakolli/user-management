@@ -23,6 +23,7 @@
     "rules": {
         "linebreak-style": ["error", "windows"],
         "no-underscore-dangle":"off",
-        "arrow-parens":"off"
+        "arrow-parens":"off",
+        "max-len":"off"
     }
 }
