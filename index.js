@@ -6,6 +6,7 @@ const winston = require('winston');
 const mongoose = require('mongoose');
 const gqlSchema = require('./graphql/schema');
 const gqlResolvers = require('./graphql/resolvers');
+const authenticate = require('./middleware/authenticate');
 
 const app = express();
 
@@ -26,6 +27,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(bodyParser.json());
+
+app.use(authenticate);
 
 app.use(
   '/graphql',
