@@ -23,6 +23,6 @@ module.exports = (req, res, next) => {
     return next();
   }
   req.isAuth = true;
-  req.userData = decodedToken.userData;
+  req.userData = decodedToken._doc;
   return next();
 };

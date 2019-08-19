@@ -57,7 +57,7 @@ module.exports = {
       throw errors.unauthenticated;
     }
     try {
-      const user = await User.findOne({ _id: args.updateUserInput.userId });
+      const user = await User.findOne({ _id: req.userData._id });
       if (!user) {
         throw errors.userDoesNotExist;
       }
@@ -72,7 +72,7 @@ module.exports = {
         updateFields.email = args.updateUserInput.email;
       }
       await user.update(updateFields);
-      const updatedUser = await User.findOne({ _id: args.updateUserInput.userId });
+      const updatedUser = await User.findOne({ _id: req.userData._id });
       return formatUser(updatedUser);
     } catch (err) {
       throw err;

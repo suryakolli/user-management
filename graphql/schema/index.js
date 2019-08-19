@@ -26,7 +26,6 @@ module.exports = buildSchema(`
           email: String!
         }
         input UpdateUserInput {
-          userId: ID!,
           username: String,
           contact: String,
           email: String
