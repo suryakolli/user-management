@@ -52,4 +52,30 @@ module.exports = {
       tokenExpiration: '1h',
     };
   },
+  updateUser: async (args, req) => {
+    if (!req.isAuth) {
+      throw errors.unauthenticated;
+    }
+    try {
+      const user = await User.findOne({ _id: args.updateUserInput.userId });
+      if (!user) {
+        throw errors.userDoesNotExist;
+      }
+      const updateFields = {};
+      if (args.updateUserInput.username) {
+        updateFields.username = args.updateUserInput.username;
+      }
+      if (args.updateUserInput.contact) {
+        updateFields.contact = args.updateUserInput.contact;
+      }
+      if (args.updateUserInput.email) {
+        updateFields.email = args.updateUserInput.email;
+      }
+      await user.update(updateFields);
+      const updatedUser = await User.findOne({ _id: args.updateUserInput.userId });
+      return formatUser(updatedUser);
+    } catch (err) {
+      throw err;
+    }
+  },
 };
